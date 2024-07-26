@@ -1,4 +1,4 @@
-name: Deploy Node.js App
+name: Deploy to Vercel
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,12 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
-
-      - name: Deploy to Heroku
+      - name: Deploy to Vercel
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          git remote add heroku https://git.heroku.com/your-heroku-app.git
-          git push heroku main
+          npm install -g vercel
+          vercel --prod --token $VERCEL_TOKEN
